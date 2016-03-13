@@ -11,4 +11,4 @@
 # takes a dictionary and post it as a JSON string, equivalent to:
 # data=json.dumps(data).
 
-url = 'https://hooks.slack.com/services/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'
+url = 'https://hooks.slack.com/services/Txxxxxxxxx/xxxxxxxx/xxxxxxxxxxxxxxxxxxx'
