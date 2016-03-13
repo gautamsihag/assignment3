@@ -13,6 +13,17 @@
 # so here I consider when the rate of events booking changes and steps over the 
 # certain threshold (e.g. the average time between events has dropped to a small
 # number, or the events are happening very frequently).
+
+# ENTROPY (this same text appears in the README)
+# For entropy, it is observable that the system might be looking forward to be interested in the 
+# situation where the distribution over the states evens out. Certain states like New York or California 
+# should generally dominate, so there is pretty low entropy to begin with. As such cetain states like 
+# Maine which to my observation has a comparably lower rate of meeting bookings, suddely sees a lot of reservation, 
+# the entropy will rise as the distribution evens out.
+
+
+
+
 from sys import stdin, stdout
 from datetime import datetime
 import json
@@ -25,8 +36,10 @@ import json
 # the reverse process, i.e., when the system is below the THRESHOLD and it receives 30 consecutive events, it decreses the 
 # THRESHOLD. After each change, the value of each of the counter is set back to original values
 # defining the THRESHOLD and other variables
-Entropy_thresh = 2
 
+Entropy_thresh = 2
+# This is where we set our rate threshold. The process for deriving it is
+# described in the comments above.
 rate_anomaly = False
 ent_anomaly = False
 
@@ -88,15 +101,23 @@ while True:
         if negi_count < 0:
             THRESHOLD -= 10
             negi_count = 30
-            
+    
+    # If entropy larger than the treshold...        
     if inputs.get('entropy') > Entropy_thresh:
+        # And not currently in a high-entropy state...
         if not ent_anomaly:
+            # Set the current state to high entropy, so we don't send repetitive
+            # messages
             ent_anomaly = True
             p = json.dumps({'type':'high_entropy','anomaly':True,'entropy':inputs.get('entropy'),'timestamp':str(datetime.now())})
             print (p)
             stdout.flush()
+    # if below the entropy levels
     else:
+        # Checking whether the current situation is in high entropy
         if ent_anomaly:
+            # When above the entropy levels: switching it off implying the anomalous time is over, and then
+        # transmitting the message to be trasmitted via Slack.
             ent_anomaly = False
             print(json.dumps({'type':'high_entropy','anomaly':False,'entropy':inputs.get('entropy'),'timestamp':str(datetime.now())})
             stdout.flush()
