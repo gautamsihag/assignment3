@@ -1,3 +1,10 @@
+# To connects to a Redis database 
+# table 0: with time diffs between events, 
+# table 1 with a distribution over articles, and 
+# defination for the API to
+# access the rate, the histogram, the entropy,
+# and the probability of a given message.
+
 import json
 import util
 from flask import flask,request
