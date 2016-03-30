@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+//This page shows the distribution of rsvp by states as a bar chart
+<!--
+Credits:
+https://bl.ocks.org/mbostock/3310560
+-->
+<meta charset="utf-8">
+//setup style
+<style>
+body {
+  font: 10px sans-serif;
+}
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+.bar {
+  fill: steelblue;
+}
+.x.axis path {
+  display: none;
+}
+</style>
+<body>
+  <h1>RSVP signup distribution by state</h1>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
+var margin = {top: 20, right: 30, bottom: 30, left: 40},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+var x = d3.scale.ordinal()
+    .rangeRoundBands([0, width], 0.1, 0.2);
+var y = d3.scale.linear()
+    .range([height, 0]);
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+d3.json("/distribution", function(error, histogramValues) {
+  var histogramEntries = d3.entries(histogramValues);
+  x.domain( histogramEntries.map(function(d) { return d.key; }) );
+  y.domain([0, d3.max(histogramEntries, function(d) { return d.value; })]);
+
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.svg.axis().scale(x).orient("bottom"));
+  svg.append("g")
+        .attr("class", "y axis")
+      .call(d3.svg.axis().scale(y).orient("left"))
+      .append("text")
+      .text("Ratio Frequency");
+  svg.selectAll(".bar")
+      .data(histogramEntries)
+    .enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", function(d) { return x(d.key); })
+      .attr("width", x.rangeBand())
+      .attr("y", function(d) { return y(d.value); })
+      .attr("height", function(d) { return height - y(d.value); });
+});
+</script>

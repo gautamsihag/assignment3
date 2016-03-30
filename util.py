@@ -11,9 +11,9 @@ from collections import Counter
 from math import log
 # Establishing the connection to the Redis table containing time differences which is used for
 # rate calculations
-rate_conn = redis.Redis(db =0)
+rate_conn = redis.Redis(db=0)
 # Establish the connection to the Redis table containing the distribution.
-dist_conn = redis.redis(db =1)
+dist_conn = redis.Redis(db=1)
 # This function generates a hostogram as a json.
 def histogram():
 	# Get the keys
@@ -53,6 +53,7 @@ def rate():
 	diffs = [float(diff) for diff in diffs]
 	# Now we just average all of the diffs in the database.
 	avg = sum(diffs)/len(diffs)
+	return avg
 
 # function to calculate: entropy of the categorical distribution in the
 # Redis db.

@@ -7,7 +7,7 @@
 
 import json
 import util
-from flask import flask,request
+from flask import Flask,request
 
 app = Flask(__name__)
 

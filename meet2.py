@@ -47,19 +47,20 @@ for meetUp_next in meetUp.iter_lines():
                     else:
                     # if there is an existing record, calculate the absolute diff in the time of the two events and convert them into hours
                         count +=1
-                        if count > 15:
-                            diff = (abs(m["event"]["time"] - b[group_state]))/(24*60*60*1000)
+                        #if count > 1:
+                        diff = (abs(m["event"]["time"] - b[group_state]))/(24*60*60*1000)
                         # delete from the dictionary the value corresponding to the previous key
-                            del b[group_state]
+                        del b[group_state]
+                        print (diff)
                         # Add the value of the time to previous key
-                            #b[group_state]=m["event"]["time"]
+                        b[group_state]=m["event"]["time"]
                         # Print JSON to stdout, to be processed by diff.py.
-                            if diff > 0:
-                                print(json.dumps({"t": diff}))
+                        if diff >= 0 or diff <= 0:
+                            print(json.dumps({"t": diff}))
                         #print('{"Name":"%s", "Latitude":%s, "Longitude":%s, "Visibility":"%s", "ReservationId":%s, "VenueId":%s}'%(name,lon,lat,visi,rid,vid))
                         # As always, flush stdout to get it to print without getting put in a buffer!
-                                stdout.flush()
-                        else:
-                            continue
+                            stdout.flush()
+                        #else:
+                        #    continue
     except:
         continue

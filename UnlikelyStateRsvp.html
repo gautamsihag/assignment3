@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+//This html page shows alerts if there is rsvp from a state which generally has very low rsvps
+<body>
+
+<script>
+  // setup websocket with callbacks
+  var ws = new WebSocket('ws://localhost:8080/');
+  ws.onopen =     function() {
+
+  };
+  
+  ws.onclose = function() {
+
+  };
+// Print message on web page when there is an alert
+  ws.onmessage = function(event) {
+document.writeln(event.data);
+
+
+  };
+  
+  </script>
+  </body>

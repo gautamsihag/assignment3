@@ -119,5 +119,7 @@ while True:
             # When above the entropy levels: switching it off implying the anomalous time is over, and then
         # transmitting the message to be trasmitted via Slack.
             ent_anomaly = False
-            print(json.dumps({'type':'high_entropy','anomaly':False,'entropy':inputs.get('entropy'),'timestamp':str(datetime.now())})
+            print(json.dumps({'type':'high_entropy','anomaly':False,'entropy':inputs.get('entropy'),'timestamp':str(datetime.now())}))
             stdout.flush()
+
+
